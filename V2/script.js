@@ -1,5 +1,7 @@
 const grid_x = 4;
+
 const grid_y = 5;
+const grid_root = 4;
 const board = document.querySelector(".board");
 
 function create_element(n) {
@@ -11,9 +13,13 @@ function create_element(n) {
 }
 
 function create_board() {
-  for (let n = 0; n < grid_root ** 2; n++) {
-    create_element(n);
+  for (let k = 0; k < grid_x * grid_y; k++) {
+    create_element(k);
   }
+
+  // for (let n = 0; n < grid_root ** 2; n++) {
+  //   create_element(n);
+  // }
 }
 
 function insert_content(the_list) {
@@ -64,34 +70,36 @@ boxes.forEach((box) => {
 
 let counter = 0;
 let stored_box = null;
+let doing_something = false;
 
 function click(box_clicked) {
-  // if (doing_something) {
-  //   return false;
-  // }
+  if (doing_something) {
+    return false;
+  }
   if (box_clicked.target.innerHTML == "") {
     // console.log("HI");
     if (counter == 1) {
       // doing_something = true;
-      box_clicked.target.innerHTML = solution[box_clicked.target.id];
+      box_clicked.target.innerHTML = `<h1>${solution[box_clicked.target.id]}</h1>`;
       counter = 0;
       if (check_turn(stored_box, box_clicked.target.id, solution)) {
         console.log("SHOW");
       } else {
+        doing_something = true;
         setTimeout(() => {
           document.getElementById(stored_box).innerHTML = "";
           document.getElementById(box_clicked.target.id).innerHTML = "";
           console.log("HIDE");
+
+          doing_something = false;
         }, 600);
-        // doing_something = false;
-        console.log("NISSE");
       }
 
       //console.log("Two boxes clicked");
     } else {
       counter += 1;
       stored_box = box_clicked.target.id;
-      box_clicked.target.innerHTML = solution[stored_box];
+      box_clicked.target.innerHTML = `<h1>${solution[box_clicked.target.id]}</h1>`;
     }
   }
 }
