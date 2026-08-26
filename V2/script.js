@@ -1,5 +1,5 @@
 const grid_x = 4;
-const grid_y = 5;
+const grid_y = 2;
 const grid_root = 4;
 const board = document.querySelector(".board");
 
@@ -12,15 +12,16 @@ function create_element(n) {
 }
 
 function create_board() {
-  for (let k = 0; k < grid_x * grid_y; k++) {
-    create_element(k);
+  if ((grid_x * grid_y) % 2 == 0) {
+    for (let k = 0; k < grid_x * grid_y; k++) {
+      create_element(k);
+    }
+    let css_board = (document.getElementById(
+      "board",
+    ).style.gridTemplateColumns = `repeat(${grid_x}, var(--size))`);
+  } else {
+    return false;
   }
-  let css_board = (document.getElementById("board").style.gridTemplateColumns =
-    `repeat(${grid_x}, var(--size))`);
-
-  // for (let n = 0; n < grid_root ** 2; n++) {
-  //   create_element(n);
-  // }
 }
 
 function insert_content(the_list) {
@@ -47,17 +48,22 @@ function scramble_content(the_list) {
   // console.log(the_list);
   return the_list;
 }
-
+let done = (grid_x * grid_y) / 2;
+let progress = 0;
 function check_turn(box_1, box_2, solution) {
   if (solution[box_1] == solution[box_2]) {
+    progress++;
+    if (progress == done) {
+      console.log("DONE!");
+      stop_timer();
+    }
     console.log("CORRECT");
     return true;
   } else {
-    console.log("INCORRECT");
+    // console.log("INCORRECT");
     return false;
   }
 }
-
 create_board();
 
 const boxes = document.querySelectorAll(".box");
@@ -84,13 +90,13 @@ function click(box_clicked) {
       box_clicked.target.innerHTML = `<h1>${solution[box_clicked.target.id]}</h1>`;
       counter = 0;
       if (check_turn(stored_box, box_clicked.target.id, solution)) {
-        console.log("SHOW");
+        // console.log("SHOW");
       } else {
         doing_something = true;
         setTimeout(() => {
           document.getElementById(stored_box).innerHTML = "";
           document.getElementById(box_clicked.target.id).innerHTML = "";
-          console.log("HIDE");
+          // console.log("HIDE");
 
           doing_something = false;
         }, 600);
@@ -104,7 +110,21 @@ function click(box_clicked) {
     }
   }
 }
+let clock = document.getElementById("clock");
+// console.log(clock);
+let timer_id;
+function update_timer(timer) {
+  clock.innerHTML = timer;
+
+  timer_id = setTimeout(() => {
+    update_timer(timer + 1);
+  }, 1000);
+}
+function stop_timer() {
+  clearTimeout(timer_id);
+}
 
 sorted_list = create_content(grid_x * grid_y);
 solution = scramble_content(sorted_list);
+update_timer(1);
 //console.log(solution);

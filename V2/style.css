@@ -29,3 +29,7 @@ h1 {
   align-items: center;
   min-height: 100vh;
 }
+#clock {
+  display: flex;
+  justify-self: center;
+}
