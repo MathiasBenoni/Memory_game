@@ -1,6 +1,5 @@
 const grid_x = 4;
 const grid_y = 2;
-const grid_root = 4;
 const board = document.querySelector(".board");
 
 function create_element(n) {
