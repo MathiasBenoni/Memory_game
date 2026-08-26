@@ -1,5 +1,4 @@
 const grid_x = 4;
-
 const grid_y = 5;
 const grid_root = 4;
 const board = document.querySelector(".board");
@@ -16,6 +15,8 @@ function create_board() {
   for (let k = 0; k < grid_x * grid_y; k++) {
     create_element(k);
   }
+  let css_board = (document.getElementById("board").style.gridTemplateColumns =
+    `repeat(${grid_x}, var(--size))`);
 
   // for (let n = 0; n < grid_root ** 2; n++) {
   //   create_element(n);
