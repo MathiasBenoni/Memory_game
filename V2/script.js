@@ -105,6 +105,6 @@ function click(box_clicked) {
   }
 }
 
-sorted_list = create_content(grid_root ** 2);
+sorted_list = create_content(grid_x * grid_y);
 solution = scramble_content(sorted_list);
 //console.log(solution);
