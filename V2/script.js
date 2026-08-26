@@ -16,7 +16,7 @@ function create_element(n) {
   let box = document.createElement("div");
   box.className = "box";
   box.id = n;
-  // box.innerHTML = n;
+  box.addEventListener("click", click);
   document.getElementById("board").appendChild(box);
 }
 
@@ -59,13 +59,22 @@ function scramble_content(the_list) {
   return the_list;
 }
 
+function delete_board() {
+  const board_el = document.getElementById("board");
+  board_el.innerHTML = "";
+  progress = 0;
+  counter = 0;
+  stored_box = null;
+  doing_something = false;
+}
+
 let progress = 0;
 function check_turn(box_1, box_2, solution) {
   if (solution[box_1] == solution[box_2]) {
     progress++;
     if (progress == done) {
       console.log("DONE!");
-      stop_timer();
+      stop_timer(timer_id);
     }
     console.log("CORRECT");
     return true;
@@ -76,7 +85,11 @@ function check_turn(box_1, box_2, solution) {
 }
 function update_game() {
   if (grid_x && grid_y) {
+    delete_board();
     create_board();
+    sorted_list = create_content(grid_x * grid_y);
+    solution = scramble_content(sorted_list);
+    stop_timer(timer_id);
     update_timer(1);
   }
 }
@@ -135,10 +148,8 @@ function update_timer(timer) {
     update_timer(timer + 1);
   }, 1000);
 }
-function stop_timer() {
-  clearTimeout(timer_id);
+function stop_timer(timer) {
+  clearTimeout(timer);
 }
 
-sorted_list = create_content(grid_x * grid_y);
-solution = scramble_content(sorted_list);
 //console.log(solution);
