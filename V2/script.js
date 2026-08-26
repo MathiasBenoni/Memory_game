@@ -1,6 +1,16 @@
-const grid_x = 4;
-const grid_y = 2;
 const board = document.querySelector(".board");
+let grid_x;
+let grid_y;
+let done = 0;
+
+function update_inputs() {
+  grid_x = document.getElementById("board_x").value;
+  grid_y = document.getElementById("board_y").value;
+  done = (grid_x * grid_y) / 2;
+  console.log(grid_x);
+  console.log(grid_y);
+  update_game();
+}
 
 function create_element(n) {
   let box = document.createElement("div");
@@ -19,7 +29,8 @@ function create_board() {
       "board",
     ).style.gridTemplateColumns = `repeat(${grid_x}, var(--size))`);
   } else {
-    return false;
+    document.getElementById("board_container").innerHTML =
+      "ERROR: Odd number of tiles, cannot render board";
   }
 }
 
@@ -47,7 +58,7 @@ function scramble_content(the_list) {
   // console.log(the_list);
   return the_list;
 }
-let done = (grid_x * grid_y) / 2;
+
 let progress = 0;
 function check_turn(box_1, box_2, solution) {
   if (solution[box_1] == solution[box_2]) {
@@ -63,7 +74,12 @@ function check_turn(box_1, box_2, solution) {
     return false;
   }
 }
-create_board();
+function update_game() {
+  if (grid_x && grid_y) {
+    create_board();
+    update_timer(1);
+  }
+}
 
 const boxes = document.querySelectorAll(".box");
 
@@ -125,5 +141,4 @@ function stop_timer() {
 
 sorted_list = create_content(grid_x * grid_y);
 solution = scramble_content(sorted_list);
-update_timer(1);
 //console.log(solution);
