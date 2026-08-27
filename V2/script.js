@@ -64,7 +64,7 @@ function delete_board() {
   board_el.innerHTML = "";
   progress = 0;
   counter = 0;
-  stored_box = null;
+  stored_box_1 = null;
   doing_something = false;
 }
 
@@ -104,38 +104,36 @@ boxes.forEach((box) => {
 });
 
 let counter = 0;
-let stored_box = null;
-let doing_something = false;
+let stored_box_1 = null;
+let stored_box_2 = null;
 
 function click(box_clicked) {
-  if (doing_something) {
-    return false;
+  const box = box_clicked.target;
+
+  if (box.innerHTML !== "") return;
+
+  if (counter === 2) {
+    counter = 0;
+    console.log("hiding:", stored_box_1, stored_box_2);
+    document.getElementById(stored_box_1).innerHTML = "";
+    document.getElementById(stored_box_2).innerHTML = "";
   }
-  if (box_clicked.target.innerHTML == "") {
-    // console.log("HI");
-    if (counter == 1) {
-      // doing_something = true;
-      box_clicked.target.innerHTML = `<h1>${solution[box_clicked.target.id]}</h1>`;
+
+  box.innerHTML = `<h1>${solution[box.id]}</h1>`;
+  counter++;
+
+  if (counter === 1) {
+    stored_box_1 = box.id;
+  } else if (counter === 2) {
+    stored_box_2 = box.id;
+    if (
+      document.getElementById(stored_box_1).innerHTML ==
+      document.getElementById(stored_box_2).innerHTML
+    ) {
       counter = 0;
-      if (check_turn(stored_box, box_clicked.target.id, solution)) {
-        // console.log("SHOW");
-      } else {
-        doing_something = true;
-        setTimeout(() => {
-          document.getElementById(stored_box).innerHTML = "";
-          document.getElementById(box_clicked.target.id).innerHTML = "";
-          // console.log("HIDE");
-
-          doing_something = false;
-        }, 600);
-      }
-
-      //console.log("Two boxes clicked");
-    } else {
-      counter += 1;
-      stored_box = box_clicked.target.id;
-      box_clicked.target.innerHTML = `<h1>${solution[box_clicked.target.id]}</h1>`;
     }
+
+    check_turn(stored_box_1, stored_box_2, solution);
   }
 }
 let clock = document.getElementById("clock");
