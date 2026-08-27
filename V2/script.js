@@ -109,8 +109,17 @@ let stored_box_2 = null;
 
 function click(box_clicked) {
   const box = box_clicked.target;
-
-  if (box.innerHTML !== "") return;
+  if (
+    box.innerHTML !== "" ||
+    box.id == stored_box_1 ||
+    box.id == stored_box_2
+  ) {
+    if (box.id == stored_box_1) {
+      document.getElementById(stored_box_2).innerHTML = "";
+    } else {
+      document.getElementById(stored_box_1).innerHTML = "";
+    }
+  }
 
   if (counter === 2) {
     counter = 0;
@@ -133,7 +142,13 @@ function click(box_clicked) {
       counter = 0;
     }
 
-    check_turn(stored_box_1, stored_box_2, solution);
+    if (check_turn(stored_box_1, stored_box_2, solution)) {
+      counter = 0;
+      document.getElementById(stored_box_1).innerHTML =
+        `<h1>${solution[stored_box_1]}</h1>`;
+      document.getElementById(stored_box_2).innerHTML =
+        `<h1>${solution[stored_box_2]}</h1>`;
+    }
   }
 }
 let clock = document.getElementById("clock");
